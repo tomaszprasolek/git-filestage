@@ -1,12 +1,14 @@
 ﻿using System;
+using System.IO;
 
 namespace git_filestage
 {
-    class Program
+    internal static class Program
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var application = new Application();
+            application.Run();
         }
     }
 }
