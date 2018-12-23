@@ -30,6 +30,7 @@ namespace git_filestage
                     WriteFile(item);
                 }
             }
+            Console.ResetColor();
 
             Console.WriteLine("");
             Console.WriteLine("Press any key to exit...");
@@ -51,6 +52,7 @@ namespace git_filestage
                 case FileStatus.RenamedInIndex:
                 case FileStatus.TypeChangeInIndex:
                     //return "Staging area";
+                    Console.ForegroundColor = ConsoleColor.DarkGreen;
                     return "S";
                 case FileStatus.NewInWorkdir:
                 case FileStatus.ModifiedInWorkdir:
@@ -58,6 +60,7 @@ namespace git_filestage
                 case FileStatus.TypeChangeInWorkdir:
                 case FileStatus.RenamedInWorkdir:
                     //return "Working directory";
+                    Console.ForegroundColor = ConsoleColor.DarkRed;
                     return "W";
             }
             return status.ToString();
