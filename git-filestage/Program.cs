@@ -26,7 +26,7 @@ namespace git_filestage
                 return;
             }
 
-            var application = new Application();
+            var application = new Application(repositoryPath, pathToGit);
             application.Run();
         }
 
