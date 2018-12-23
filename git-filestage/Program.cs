@@ -9,6 +9,9 @@ namespace git_filestage
     {
         static void Main(string[] args)
         {
+            if (Win32Console.IsSupported)
+                Win32Console.Initialize();
+
             var repositoryPath = ResolveRepositoryPath();
             if (string.IsNullOrEmpty(repositoryPath))
             {
