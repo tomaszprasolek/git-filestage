@@ -10,7 +10,11 @@ namespace git_filestage
         private string _pathToGit;
         private bool _done;
         private ConsoleCommand[] _commands;
-        private int seletedLine = 1;
+        private int _seletedLine = 1;
+        /// <summary>
+        /// Modified files count.
+        /// </summary>
+        private int _filesCount = 0;
 
         public Application(string repositoryPath, string pathToGit)
         {
@@ -23,7 +27,9 @@ namespace git_filestage
             _commands = new[]
             {
                 new ConsoleCommand(Exit, ConsoleKey.Escape),
-                new ConsoleCommand(Exit, ConsoleKey.Q)
+                new ConsoleCommand(Exit, ConsoleKey.Q),
+                new ConsoleCommand(SelectUp, ConsoleKey.UpArrow),
+                new ConsoleCommand(SelectDown, ConsoleKey.DownArrow),
             };
 
             Console.CursorVisible = false;
@@ -48,39 +54,63 @@ namespace git_filestage
             Console.CursorVisible = true;
         }
 
-        private void Exit()
-        {
-            _done = true;
-        }
-
         private void InitializeScreen()
         {
+            Console.Clear();
             Console.WriteLine("Use arrow keys to select file. Press ENTER to do the action.");
             Console.WriteLine("1. When file is in working directory, will be added to staging area.");
             Console.WriteLine("2. When file is in staging area, will be unstaged.");
             Console.WriteLine("3. When file is not ... TODO");
             Console.WriteLine("----------");
 
+            _filesCount = 0;
+            int idx = 1;
             using (var repo = new Repository(_repositoryPath))
             {
                 foreach (StatusEntry item in repo.RetrieveStatus(new StatusOptions() { Show = StatusShowOption.IndexOnly }))
                 {
                     if (item.State == FileStatus.Ignored) continue;
-                    WriteFile(item);
+                    WriteFile(item, idx);
+                    idx++;
+                    _filesCount = _filesCount + 1;
                 }
 
                 foreach (StatusEntry item in repo.RetrieveStatus(new StatusOptions() { Show = StatusShowOption.WorkDirOnly }))
                 {
                     if (item.State == FileStatus.Ignored) continue;
-                    WriteFile(item);
+                    WriteFile(item, idx);
+                    idx++;
+                    _filesCount = _filesCount + 1;
                 }
             }
             Console.ResetColor();
         }
 
-        private void WriteFile(StatusEntry entry)
+        private void Exit()
         {
-            Console.WriteLine($"{GetFileStatusFriendlyDescription(entry.State)} | {entry.FilePath}");
+            _done = true;
+        }
+
+        private void SelectUp()
+        {
+            if (_seletedLine - 1 == 0) return;
+            _seletedLine--;
+            InitializeScreen();
+        }
+
+        private void SelectDown()
+        {
+            if (_seletedLine == _filesCount) return;
+            _seletedLine++;
+            InitializeScreen();
+        }
+
+        private void WriteFile(StatusEntry entry, int idx)
+        {
+            string startCharacters = "    ";
+            if (idx == _seletedLine)
+                startCharacters = ">>> ";
+            Console.WriteLine($"{startCharacters}{GetFileStatusFriendlyDescription(entry.State)} | {entry.FilePath}");
         }
 
         private string GetFileStatusFriendlyDescription(FileStatus status)
