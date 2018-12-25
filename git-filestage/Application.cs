@@ -1,5 +1,6 @@
 ﻿using LibGit2Sharp;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace git_filestage
@@ -16,6 +17,8 @@ namespace git_filestage
         /// </summary>
         private int _filesCount = 0;
 
+        private Dictionary<int, StatusEntry> _gitEntries = new Dictionary<int, StatusEntry>(8);
+
         public Application(string repositoryPath, string pathToGit)
         {
             _repositoryPath = repositoryPath;
@@ -30,6 +33,7 @@ namespace git_filestage
                 new ConsoleCommand(Exit, ConsoleKey.Q),
                 new ConsoleCommand(SelectUp, ConsoleKey.UpArrow),
                 new ConsoleCommand(SelectDown, ConsoleKey.DownArrow),
+                new ConsoleCommand(DoTheAction, ConsoleKey.Enter),
             };
 
             Console.CursorVisible = false;
@@ -64,12 +68,15 @@ namespace git_filestage
             Console.WriteLine("----------");
 
             _filesCount = 0;
+            _gitEntries.Clear();
+
             int idx = 1;
             using (var repo = new Repository(_repositoryPath))
             {
                 foreach (StatusEntry item in repo.RetrieveStatus(new StatusOptions() { Show = StatusShowOption.IndexOnly }))
                 {
                     if (item.State == FileStatus.Ignored) continue;
+                    _gitEntries.Add(idx, item);
                     WriteFile(item, idx);
                     idx++;
                     _filesCount = _filesCount + 1;
@@ -78,6 +85,7 @@ namespace git_filestage
                 foreach (StatusEntry item in repo.RetrieveStatus(new StatusOptions() { Show = StatusShowOption.WorkDirOnly }))
                 {
                     if (item.State == FileStatus.Ignored) continue;
+                    _gitEntries.Add(idx, item);
                     WriteFile(item, idx);
                     idx++;
                     _filesCount = _filesCount + 1;
@@ -102,6 +110,42 @@ namespace git_filestage
         {
             if (_seletedLine == _filesCount) return;
             _seletedLine++;
+            InitializeScreen();
+        }
+
+        private void DoTheAction()
+        {
+            StatusEntry entry = _gitEntries[_seletedLine];
+            if (entry == null)
+                throw new ArgumentNullException(nameof(entry));
+
+            switch (entry.State)
+            {
+                case FileStatus.NewInIndex:
+                case FileStatus.ModifiedInIndex:
+                case FileStatus.DeletedFromIndex:
+                case FileStatus.RenamedInIndex:
+                case FileStatus.TypeChangeInIndex:
+                    using (var repo = new Repository(_repositoryPath))
+                    {
+                        Commands.Unstage(repo, entry.FilePath);
+                    }
+                    break;
+                case FileStatus.NewInWorkdir:
+                case FileStatus.ModifiedInWorkdir:
+                case FileStatus.DeletedFromWorkdir:
+                case FileStatus.TypeChangeInWorkdir:
+                case FileStatus.RenamedInWorkdir:
+                    using (var repo = new Repository(_repositoryPath))
+                    {
+                        repo.Index.Add(entry.FilePath);
+                        repo.Index.Write();
+                    }
+                    break;
+                default:
+                    throw new NotImplementedException();
+            }
+
             InitializeScreen();
         }
 
