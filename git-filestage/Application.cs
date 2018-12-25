@@ -64,7 +64,7 @@ namespace git_filestage
             Console.WriteLine("Use arrow keys to select file. Press ENTER to do the action.");
             Console.WriteLine("1. When file is in working directory, will be added to staging area.");
             Console.WriteLine("2. When file is in staging area, will be unstaged.");
-            Console.WriteLine("3. When file is not ... TODO");
+            Console.WriteLine("3. When file is untracked, will start tracked and add to staging area [???]");
             Console.WriteLine("----------");
 
             _filesCount = 0;
@@ -166,7 +166,6 @@ namespace git_filestage
                 case FileStatus.DeletedFromIndex:
                 case FileStatus.RenamedInIndex:
                 case FileStatus.TypeChangeInIndex:
-                    //return "Staging area";
                     Console.ForegroundColor = ConsoleColor.DarkGreen;
                     return "S";
                 case FileStatus.NewInWorkdir:
@@ -174,7 +173,6 @@ namespace git_filestage
                 case FileStatus.DeletedFromWorkdir:
                 case FileStatus.TypeChangeInWorkdir:
                 case FileStatus.RenamedInWorkdir:
-                    //return "Working directory";
                     Console.ForegroundColor = ConsoleColor.DarkRed;
                     return "W";
             }
