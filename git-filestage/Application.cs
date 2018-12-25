@@ -115,6 +115,9 @@ namespace git_filestage
 
         private void DoTheAction()
         {
+            if (_gitEntries == null || _gitEntries.Count == 0)
+                return;
+
             StatusEntry entry = _gitEntries[_seletedLine];
             if (entry == null)
                 throw new ArgumentNullException(nameof(entry));
