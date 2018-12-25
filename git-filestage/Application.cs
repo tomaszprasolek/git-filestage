@@ -162,19 +162,23 @@ namespace git_filestage
             switch (status)
             {
                 case FileStatus.NewInIndex:
+                    Console.ForegroundColor = ConsoleColor.DarkGreen;
+                    return "SN";
                 case FileStatus.ModifiedInIndex:
                 case FileStatus.DeletedFromIndex:
                 case FileStatus.RenamedInIndex:
                 case FileStatus.TypeChangeInIndex:
                     Console.ForegroundColor = ConsoleColor.DarkGreen;
-                    return "S";
+                    return "S ";
                 case FileStatus.NewInWorkdir:
+                    Console.ForegroundColor = ConsoleColor.DarkRed;
+                    return "WN";
                 case FileStatus.ModifiedInWorkdir:
                 case FileStatus.DeletedFromWorkdir:
                 case FileStatus.TypeChangeInWorkdir:
                 case FileStatus.RenamedInWorkdir:
                     Console.ForegroundColor = ConsoleColor.DarkRed;
-                    return "W";
+                    return "W ";
             }
             return status.ToString();
         }
