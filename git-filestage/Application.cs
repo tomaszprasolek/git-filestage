@@ -12,11 +12,6 @@ namespace git_filestage
         private bool _done;
         private ConsoleCommand[] _commands;
         private int _seletedLine = 1;
-        /// <summary>
-        /// Modified files count.
-        /// </summary>
-        private int _filesCount = 0;
-
         private Dictionary<int, StatusEntry> _gitEntries = new Dictionary<int, StatusEntry>(8);
 
         public Application(string repositoryPath, string pathToGit)
@@ -64,10 +59,9 @@ namespace git_filestage
             Console.WriteLine("Use arrow keys to select file. Press ENTER to do the action.");
             Console.WriteLine("1. When file is in working directory, will be added to staging area.");
             Console.WriteLine("2. When file is in staging area, will be unstaged.");
-            Console.WriteLine("3. When file is untracked, will start tracked and add to staging area [???]");
+            Console.WriteLine("3. When file is untracked, will start tracked and added to staging area");
             Console.WriteLine("----------");
 
-            _filesCount = 0;
             _gitEntries.Clear();
 
             int idx = 1;
@@ -79,7 +73,6 @@ namespace git_filestage
                     _gitEntries.Add(idx, item);
                     WriteFile(item, idx);
                     idx++;
-                    _filesCount = _filesCount + 1;
                 }
 
                 foreach (StatusEntry item in repo.RetrieveStatus(new StatusOptions() { Show = StatusShowOption.WorkDirOnly }))
@@ -88,7 +81,6 @@ namespace git_filestage
                     _gitEntries.Add(idx, item);
                     WriteFile(item, idx);
                     idx++;
-                    _filesCount = _filesCount + 1;
                 }
             }
             Console.ResetColor();
@@ -108,7 +100,7 @@ namespace git_filestage
 
         private void SelectDown()
         {
-            if (_seletedLine == _filesCount) return;
+            if (_seletedLine == _gitEntries.Count) return;
             _seletedLine++;
             InitializeScreen();
         }
