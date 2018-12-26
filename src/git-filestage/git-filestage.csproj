@@ -1,9 +1,13 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <RootNamespace>git_filestage</RootNamespace>
+    <Authors>Tomasz Prasołek</Authors>
+    <Copyright>Copyright © Tomasz Prasołek</Copyright>
+    <Description>Simple tool to stage and unstage whole files.</Description>
+    <PackageTags>git</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
