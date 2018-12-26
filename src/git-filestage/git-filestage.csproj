@@ -10,6 +10,7 @@
     <Description>Simple tool to stage and unstage whole files.</Description>
     <PackageTags>git</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <RepositoryUrl>https://github.com/tomaszprasolek/git-filestage</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
