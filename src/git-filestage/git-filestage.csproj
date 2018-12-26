@@ -9,6 +9,7 @@
     <Copyright>Copyright © Tomasz Prasołek</Copyright>
     <Description>Simple tool to stage and unstage whole files.</Description>
     <PackageTags>git</PackageTags>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
