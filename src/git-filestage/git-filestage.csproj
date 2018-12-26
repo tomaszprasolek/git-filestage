@@ -3,6 +3,7 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.2</TargetFramework>
+    <PackAsTool>true</PackAsTool>
     <RootNamespace>git_filestage</RootNamespace>
     <Authors>Tomasz Prasołek</Authors>
     <Copyright>Copyright © Tomasz Prasołek</Copyright>
