@@ -84,6 +84,14 @@ namespace git_filestage
                 }
             }
             Console.ResetColor();
+
+            if (_gitEntries == null || _gitEntries.Count == 0)
+            {
+                Console.WriteLine("");
+                Console.WriteLine("----------------------------");
+                Console.WriteLine("No changes in the repository");
+                Console.WriteLine("----------------------------");
+            }
         }
 
         private void Exit()
