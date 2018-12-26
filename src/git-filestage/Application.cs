@@ -67,15 +67,7 @@ namespace git_filestage
             int idx = 1;
             using (var repo = new Repository(_repositoryPath))
             {
-                foreach (StatusEntry item in repo.RetrieveStatus(new StatusOptions() { Show = StatusShowOption.IndexOnly }))
-                {
-                    if (item.State == FileStatus.Ignored) continue;
-                    _gitEntries.Add(idx, item);
-                    WriteFile(item, idx);
-                    idx++;
-                }
-
-                foreach (StatusEntry item in repo.RetrieveStatus(new StatusOptions() { Show = StatusShowOption.WorkDirOnly }))
+                foreach (StatusEntry item in repo.RetrieveStatus(new StatusOptions()))
                 {
                     if (item.State == FileStatus.Ignored) continue;
                     _gitEntries.Add(idx, item);
