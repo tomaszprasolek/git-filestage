@@ -3,6 +3,9 @@ using System.Runtime.InteropServices;
 
 namespace git_filestage
 {
+    /// <summary>
+    /// https://github.com/terrajobst/git-istage/blob/master/src/git-istage/Win32Console.cs
+    /// </summary>
     internal static class Win32Console
     {
         public static bool IsSupported => RuntimeInformation.IsOSPlatform(OSPlatform.Windows);

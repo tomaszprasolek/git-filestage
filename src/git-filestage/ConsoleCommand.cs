@@ -2,6 +2,9 @@
 
 namespace git_filestage
 {
+    /// <summary>
+    /// Code copied from: https://github.com/terrajobst/git-istage/blob/master/src/git-istage/ConsoleCommand.cs
+    /// </summary>
     internal sealed class ConsoleCommand
     {
         private readonly Action _handler;
