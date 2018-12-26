@@ -8,16 +8,14 @@ namespace git_filestage
     internal sealed class Application
     {
         private string _repositoryPath;
-        private string _pathToGit;
         private bool _done;
         private ConsoleCommand[] _commands;
         private int _seletedLine = 1;
         private Dictionary<int, StatusEntry> _gitEntries = new Dictionary<int, StatusEntry>(8);
 
-        public Application(string repositoryPath, string pathToGit)
+        public Application(string repositoryPath)
         {
             _repositoryPath = repositoryPath;
-            _pathToGit = pathToGit;
         }
 
         public void Run()
