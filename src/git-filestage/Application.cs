@@ -59,7 +59,9 @@ namespace git_filestage
             Console.WriteLine("1. When file is in working directory, will be added to staging area.");
             Console.WriteLine("2. When file is in staging area, will be unstaged.");
             Console.WriteLine("3. When file is untracked, will start tracked and added to staging area.");
-            Console.WriteLine("");
+            WriteEmptyLine();
+            Console.WriteLine("Press R to checkout selected file (undo changes made in file).");
+            WriteEmptyLine();
             Console.WriteLine("Legend: S - staging area, W - working directory, N - new file.");
             Console.WriteLine("----------");
 
