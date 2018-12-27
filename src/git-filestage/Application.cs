@@ -27,6 +27,7 @@ namespace git_filestage
                 new ConsoleCommand(SelectUp, ConsoleKey.UpArrow),
                 new ConsoleCommand(SelectDown, ConsoleKey.DownArrow),
                 new ConsoleCommand(DoTheAction, ConsoleKey.Enter),
+                new ConsoleCommand(CheckoutFile, ConsoleKey.R)
             };
 
             Console.CursorVisible = false;
@@ -58,7 +59,9 @@ namespace git_filestage
             Console.WriteLine("1. When file is in working directory, will be added to staging area.");
             Console.WriteLine("2. When file is in staging area, will be unstaged.");
             Console.WriteLine("3. When file is untracked, will start tracked and added to staging area.");
-            Console.WriteLine("");
+            WriteEmptyLine();
+            Console.WriteLine("Press R to checkout selected file (undo changes made in file).");
+            WriteEmptyLine();
             Console.WriteLine("Legend: S - staging area, W - working directory, N - new file.");
             Console.WriteLine("----------");
 
@@ -144,12 +147,56 @@ namespace git_filestage
             InitializeScreen();
         }
 
+        private void CheckoutFile()
+        {
+            if (_gitEntries == null || _gitEntries.Count == 0)
+                return;
+
+            StatusEntry entry = _gitEntries[_seletedLine];
+            if (entry == null)
+                throw new ArgumentNullException(nameof(entry));
+
+            Console.Clear();
+
+            WriteEmptyLine();
+            Console.ForegroundColor = ConsoleColor.DarkRed;
+            WriteFile(entry, _seletedLine);
+
+            Console.ResetColor();
+            WriteEmptyLine();
+
+            Console.WriteLine($"Do you want to undo changes in selected file [y/n] ?");
+            Console.WriteLine("Be careful: there is no undo for that operation.");
+
+            ConsoleKey key;
+            do
+            {
+                key = Console.ReadKey(true).Key;
+
+                if (key == ConsoleKey.Y)
+                {
+                    using (var repo = new Repository(_repositoryPath))
+                    {
+                        repo.CheckoutPaths(repo.Head.Tip.Sha, new[] { entry.FilePath }, new CheckoutOptions { CheckoutModifiers = CheckoutModifiers.Force });
+                    }
+                    break;
+                }
+            } while (key != ConsoleKey.N && key != ConsoleKey.Escape);
+
+            InitializeScreen();
+        }
+
         private void WriteFile(StatusEntry entry, int idx)
         {
             string startCharacters = "    ";
             if (idx == _seletedLine)
                 startCharacters = ">>> ";
             Console.WriteLine($"{startCharacters}{GetFileStatusFriendlyDescription(entry.State)} | {entry.FilePath}");
+        }
+
+        private void WriteEmptyLine()
+        {
+            Console.WriteLine("");
         }
 
         private string GetFileStatusFriendlyDescription(FileStatus status)
