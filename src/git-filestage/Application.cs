@@ -62,7 +62,7 @@ namespace git_filestage
             WriteEmptyLine();
             Console.WriteLine("Press R to checkout selected file (undo changes made in file).");
             WriteEmptyLine();
-            Console.WriteLine("Legend: S - staging area, W - working directory, N - new file.");
+            Console.WriteLine("Legend: S - staging area, W - working directory, N - new file, D - deleted");
             Console.WriteLine("----------");
 
             _gitEntries.Clear();
@@ -212,8 +212,10 @@ namespace git_filestage
                 case FileStatus.NewInIndex:
                     Console.ForegroundColor = ConsoleColor.DarkGreen;
                     return "SN";
-                case FileStatus.ModifiedInIndex:
                 case FileStatus.DeletedFromIndex:
+                    Console.ForegroundColor = ConsoleColor.DarkGreen;
+                    return "SD";
+                case FileStatus.ModifiedInIndex:
                 case FileStatus.RenamedInIndex:
                 case FileStatus.TypeChangeInIndex:
                     Console.ForegroundColor = ConsoleColor.DarkGreen;
@@ -221,8 +223,10 @@ namespace git_filestage
                 case FileStatus.NewInWorkdir:
                     Console.ForegroundColor = ConsoleColor.DarkRed;
                     return "WN";
-                case FileStatus.ModifiedInWorkdir:
                 case FileStatus.DeletedFromWorkdir:
+                    Console.ForegroundColor = ConsoleColor.DarkRed;
+                    return "WD";
+                case FileStatus.ModifiedInWorkdir:
                 case FileStatus.TypeChangeInWorkdir:
                 case FileStatus.RenamedInWorkdir:
                     Console.ForegroundColor = ConsoleColor.DarkRed;
