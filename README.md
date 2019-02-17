@@ -7,6 +7,16 @@ Simple tool to stage and unstage whole files.
 
 ![](docs/git-filestage.gif)
 
+## Why I wrote this piece of software?
+
+I want to have my commits clean.
+They should contains only the code that fix the problem which is written in commite message.
+Sometimes I make more changes, so I have to split my work to 2 or more commits.
+Mostly I have to type long paths to files like: `src\projectName\moduleName\someFolder\anotherFolderName\File.cs`
+
+I just want to quick select files and add them to staging area.
+I also don't want switch from console to some GUI app.
+
 ## Installation
 
 	dotnet tool install -g git-filestage
