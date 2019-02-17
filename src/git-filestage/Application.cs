@@ -131,12 +131,18 @@ namespace git_filestage
                     break;
                 case FileStatus.NewInWorkdir:
                 case FileStatus.ModifiedInWorkdir:
-                case FileStatus.DeletedFromWorkdir:
                 case FileStatus.TypeChangeInWorkdir:
                 case FileStatus.RenamedInWorkdir:
                     using (var repo = new Repository(_repositoryPath))
                     {
                         repo.Index.Add(entry.FilePath);
+                        repo.Index.Write();
+                    }
+                    break;
+                case FileStatus.DeletedFromWorkdir:
+                    using (var repo = new Repository(_repositoryPath))
+                    {
+                        repo.Index.Remove(entry.FilePath);
                         repo.Index.Write();
                     }
                     break;
