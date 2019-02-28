@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace git_filestage
 {
@@ -54,16 +55,22 @@ namespace git_filestage
 
         private void InitializeScreen()
         {
-            Console.Clear();
-            Console.WriteLine("Use arrow keys to select file. Press ENTER to do the action.");
-            Console.WriteLine("1. When file is in working directory, will be added to staging area.");
-            Console.WriteLine("2. When file is in staging area, will be unstaged.");
-            Console.WriteLine("3. When file is untracked, will start tracked and added to staging area.");
-            WriteEmptyLine();
-            Console.WriteLine("Press R to checkout selected file (undo changes made in file).");
-            WriteEmptyLine();
-            Console.WriteLine("Legend: S - staging area, W - working directory, N - new file, D - deleted");
-            Console.WriteLine("----------");
+            Console.SetCursorPosition(0, 0);
+
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("");
+
+            sb.Append("Use arrow keys to select file. Press ENTER to do the action.");
+            sb.AppendLine("1. When file is in working directory, will be added to staging area.");
+            sb.AppendLine("2. When file is in staging area, will be unstaged.");
+            sb.AppendLine("3. When file is untracked, will start tracked and added to staging area.");
+            sb.AppendLine(WriteEmptyLine());
+            sb.AppendLine("Press R to checkout selected file (undo changes made in file).");
+            sb.AppendLine(WriteEmptyLine());
+            sb.AppendLine("Legend: S - staging area, W - working directory, N - new file, D - deleted");
+            sb.AppendLine("----------");
+
+            Console.Write(sb);
 
             _gitEntries.Clear();
 
@@ -200,9 +207,9 @@ namespace git_filestage
             Console.WriteLine($"{startCharacters}{GetFileStatusFriendlyDescription(entry.State)} | {entry.FilePath}");
         }
 
-        private void WriteEmptyLine()
+        private string WriteEmptyLine()
         {
-            Console.WriteLine("");
+            return "";
         }
 
         private string GetFileStatusFriendlyDescription(FileStatus status)
