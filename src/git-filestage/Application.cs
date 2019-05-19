@@ -56,6 +56,7 @@ namespace git_filestage
         private void InitializeScreen()
         {
             Console.SetCursorPosition(0, 0);
+            ClearCurrentConsoleLine();
 
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("");
@@ -240,6 +241,14 @@ namespace git_filestage
                     return "W ";
             }
             return status.ToString();
+        }
+
+        private static void ClearCurrentConsoleLine()
+        {
+            int currentLineCursor = Console.CursorTop;
+            Console.SetCursorPosition(0, Console.CursorTop);
+            Console.Write(new string(' ', Console.WindowWidth));
+            Console.SetCursorPosition(0, currentLineCursor);
         }
     }
 }
