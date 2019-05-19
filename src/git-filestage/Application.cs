@@ -65,9 +65,9 @@ namespace git_filestage
             sb.AppendLine("1. When file is in working directory, will be added to staging area.");
             sb.AppendLine("2. When file is in staging area, will be unstaged.");
             sb.AppendLine("3. When file is untracked, will start tracked and added to staging area.");
-            sb.AppendLine(WriteEmptyLine());
+            sb.AppendLine("");
             sb.AppendLine("Press R to checkout selected file (undo changes made in file).");
-            sb.AppendLine(WriteEmptyLine());
+            sb.AppendLine("");
             sb.AppendLine("Legend: S - staging area, W - working directory, N - new file, D - deleted");
             sb.AppendLine("----------");
 
@@ -208,9 +208,9 @@ namespace git_filestage
             Console.WriteLine($"{startCharacters}{GetFileStatusFriendlyDescription(entry.State)} | {entry.FilePath}");
         }
 
-        private string WriteEmptyLine()
+        private void WriteEmptyLine()
         {
-            return "";
+            Console.WriteLine("");
         }
 
         private string GetFileStatusFriendlyDescription(FileStatus status)
